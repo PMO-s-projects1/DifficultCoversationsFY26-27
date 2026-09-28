@@ -1,0 +1,1562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conversation Compass</title>
+<meta name="description" content="An interactive framework guide for YPO MENA Regional Directors navigating difficult conversations with members and teams.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101826;
+    --ink-soft:#4B5A6E;
+    --ink-faint:#7A8A9C;
+    --paper:#EDF1F4;
+    --surface:#FFFFFF;
+    --surface-raised:#F6F8F9;
+    --line:#D6DEE5;
+    --line-strong:#B9C4CE;
+    --accent:#A9803F;
+    --accent-ink:#7A5C28;
+    --accent-soft:#F2E7D3;
+    --team:#2E6E6E;
+    --team-soft:#DCEEEC;
+    --peer:#5C5490;
+    --peer-soft:#E7E4F3;
+    --shadow:0 1px 2px rgba(16,24,38,.06), 0 8px 24px rgba(16,24,38,.06);
+    --radius:3px;
+    --serif:'Spectral', Georgia, 'Times New Roman', serif;
+    --sans:'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#ECEFF3; --ink-soft:#B4BECB; --ink-faint:#7F8CA0;
+      --paper:#0A0F16; --surface:#121A25; --surface-raised:#0E1520;
+      --line:#26323F; --line-strong:#38465600;
+      --accent:#D9B274; --accent-ink:#EBCB93; --accent-soft:#241C0F;
+      --team:#5FB6B4; --team-soft:#0F2222;
+      --peer:#A69CE0; --peer-soft:#1C1A2E;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#ECEFF3; --ink-soft:#B4BECB; --ink-faint:#7F8CA0;
+    --paper:#0A0F16; --surface:#121A25; --surface-raised:#0E1520;
+    --line:#26323F; --line-strong:#3A4859;
+    --accent:#D9B274; --accent-ink:#EBCB93; --accent-soft:#241C0F;
+    --team:#5FB6B4; --team-soft:#0F2222;
+    --peer:#A69CE0; --peer-soft:#1C1A2E;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  body{ background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.55; }
+  .wrap{ max-width:840px; margin:0 auto; padding:0 20px; }
+  h1,h2,h3{ font-family:var(--serif); font-weight:600; text-wrap:balance; margin:0; color:var(--ink); }
+  p{ margin:0; }
+  a{ color:inherit; }
+  button{ font-family:var(--sans); cursor:pointer; }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint); }
+
+  /* ---- header ---- */
+  header.site{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    background:var(--surface); border-bottom:1px solid var(--line);
+  }
+  .site-bar{ max-width:840px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:14px; }
+  .brand{ display:flex; align-items:center; gap:9px; text-decoration:none; flex:0 0 auto; }
+  .brand svg{ width:22px; height:22px; flex:none; }
+  .brand-text{ font-family:var(--serif); font-weight:600; font-size:16px; color:var(--ink); white-space:nowrap; }
+  .brand-sub{ font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-top:1px; }
+  nav.site-nav{ display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; }
+  nav.site-nav::-webkit-scrollbar{ display:none; }
+  nav.site-nav a{ text-decoration:none; font-size:12.5px; font-weight:600; color:var(--ink-soft); padding:6px 10px; border-radius:20px; white-space:nowrap; border:1px solid transparent; }
+  nav.site-nav a:hover{ color:var(--ink); background:var(--surface-raised); }
+  nav.site-nav a.active{ color:var(--accent-ink); background:var(--accent-soft); border-color:var(--accent); }
+
+  main{ padding-block:36px 72px; min-height:60vh; }
+
+  /* ---- home ---- */
+  .cover{ padding-block:28px 8px; }
+  .cover .eyebrow{ margin-bottom:14px; }
+  .cover h1{ font-size:clamp(34px,6vw,52px); line-height:1.05; max-width:11ch; }
+  .cover .tagline{ font-family:var(--serif); font-style:italic; font-size:19px; color:var(--ink-soft); margin-top:16px; max-width:46ch; }
+  .cover .desc{ margin-top:18px; color:var(--ink-soft); max-width:56ch; font-size:15px; }
+  .cta-row{ display:flex; gap:14px; margin-top:30px; flex-wrap:wrap; }
+  .btn{ display:inline-flex; align-items:center; gap:9px; padding:13px 22px; border-radius:var(--radius); font-weight:600; font-size:14.5px; text-decoration:none; border:1px solid transparent; }
+  .btn-primary{ background:var(--ink); color:var(--paper); }
+  :root[data-theme="dark"] .btn-primary, @media (prefers-color-scheme:dark){ .btn-primary{ background:var(--accent); color:#1A1305; } }
+  .btn-secondary{ background:transparent; color:var(--ink); border-color:var(--line-strong); }
+  .btn-secondary:hover{ background:var(--surface-raised); }
+  .btn-primary:hover{ opacity:.88; }
+
+  .checklist{ margin-top:46px; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); padding:20px 22px; }
+  .checklist h2{ font-size:16px; }
+  .checklist ul{ margin:12px 0 0; padding:0; list-style:none; display:grid; gap:9px; }
+  .checklist li{ font-size:14px; color:var(--ink-soft); padding-left:20px; position:relative; }
+  .checklist li:before{ content:"—"; position:absolute; left:0; color:var(--accent); font-weight:700; }
+
+  .toolkit-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; margin-top:16px; }
+  .tgrid-title{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); margin:52px 0 0; }
+  .tool-card{ display:block; text-decoration:none; border:1px solid var(--line); background:var(--surface); border-radius:var(--radius); padding:16px 17px; }
+  .tool-card:hover{ border-color:var(--line-strong); background:var(--surface-raised); }
+  .tool-card .t{ font-weight:700; font-size:14.5px; color:var(--ink); }
+  .tool-card .d{ font-size:12.5px; color:var(--ink-soft); margin-top:5px; line-height:1.45; }
+
+  /* ---- quiz ---- */
+  .quiz-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+  .quiz-progress{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); }
+  .back-link{ font-size:13px; font-weight:600; color:var(--ink-soft); text-decoration:none; display:inline-flex; align-items:center; gap:5px; }
+  .back-link:hover{ color:var(--ink); }
+  .q-title{ font-size:clamp(24px,4vw,32px); margin-bottom:26px; max-width:20ch; }
+  .opt-grid{ display:grid; gap:12px; }
+  .opt-card{ display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; text-align:left; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; text-decoration:none; }
+  .opt-card:hover{ border-color:var(--accent); background:var(--surface-raised); }
+  .opt-main{ display:flex; flex-direction:column; gap:5px; }
+  .opt-main .t{ font-weight:700; font-size:15.5px; color:var(--ink); font-family:var(--serif); }
+  .opt-main .d{ font-size:13px; color:var(--ink-soft); }
+  .opt-arrow{ flex:none; color:var(--ink-faint); font-size:18px; }
+  .opt-card:hover .opt-arrow{ color:var(--accent); }
+
+  /* ---- pills ---- */
+  .pill{ display:inline-flex; align-items:center; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; font-weight:600; padding:4px 10px; border-radius:20px; border:1px solid; }
+  .pill-member{ background:var(--accent-soft); color:var(--accent-ink); border-color:var(--accent); }
+  .pill-team{ background:var(--team-soft); color:var(--team); border-color:var(--team); }
+  .pill-peer{ background:var(--peer-soft); color:var(--peer); border-color:var(--peer); }
+
+  /* ---- browse ---- */
+  .filter-row{ display:flex; gap:8px; flex-wrap:wrap; margin:18px 0 22px; }
+  .filter-btn{ font-size:12.5px; font-weight:600; padding:7px 13px; border-radius:20px; border:1px solid var(--line-strong); background:var(--surface); color:var(--ink-soft); }
+  .filter-btn.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .search-box{ width:100%; padding:12px 14px; border:1px solid var(--line-strong); border-radius:var(--radius); background:var(--surface); color:var(--ink); font-size:14px; font-family:var(--sans); }
+  .search-box:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .browse-grid{ display:grid; gap:11px; margin-top:20px; }
+  .browse-card{ display:block; text-decoration:none; border:1px solid var(--line); background:var(--surface); border-radius:var(--radius); padding:16px 18px; }
+  .browse-card:hover{ border-color:var(--accent); }
+  .browse-card .t{ font-weight:700; font-family:var(--serif); font-size:16px; color:var(--ink); margin-top:8px; }
+  .browse-card .d{ font-size:13px; color:var(--ink-soft); margin-top:5px; }
+  .empty-note{ color:var(--ink-faint); font-size:14px; padding:30px 0; text-align:center; }
+
+  /* ---- scenario ---- */
+  .scenario-head{ padding-bottom:22px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+  .scenario-head h1{ font-size:clamp(26px,4.5vw,36px); margin-top:14px; max-width:22ch; }
+  .scenario-head .teaser{ font-family:var(--serif); font-style:italic; color:var(--ink-soft); font-size:16.5px; margin-top:10px; max-width:52ch; }
+  .fw-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+  .fw-tag{ font-size:12px; font-weight:600; color:var(--ink-soft); background:var(--surface-raised); border:1px solid var(--line); padding:5px 11px; border-radius:20px; }
+  .fw-tag b{ color:var(--ink); font-weight:700; }
+
+  .block{ margin-top:30px; }
+  .block-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:13px; }
+  .block-num{ font-family:var(--mono); font-size:11px; color:var(--accent); font-weight:700; }
+  .block h2{ font-size:13px; letter-spacing:.06em; text-transform:uppercase; font-family:var(--mono); font-weight:600; color:var(--ink); }
+  .bullets{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+  .bullets li{ position:relative; padding-left:18px; font-size:14.5px; color:var(--ink-soft); line-height:1.6; }
+  .bullets li:before{ content:""; position:absolute; left:0; top:9px; width:6px; height:6px; border-radius:50%; background:var(--line-strong); }
+  .block-setup .bullets li:before{ background:var(--accent); }
+  .block-avoid .bullets li:before{ background:var(--ink-faint); }
+
+  .say-box{ background:var(--surface); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin-bottom:9px; font-family:var(--serif); font-size:15.5px; color:var(--ink); font-style:italic; }
+  .say-box:last-child{ margin-bottom:0; }
+
+  .scenario-actions{ display:flex; gap:10px; margin-top:40px; padding-top:22px; border-top:1px solid var(--line); flex-wrap:wrap; }
+
+  /* ---- script builder ---- */
+  .script-panel{ margin-top:34px; padding-top:26px; border-top:1px solid var(--line); }
+  .sb-intro{ font-size:14px; color:var(--ink-soft); margin-bottom:18px; max-width:58ch; }
+  .sb-bank-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:22px; }
+  .sb-bank-item{ border:1px solid var(--line); border-radius:var(--radius); padding:11px 13px; background:var(--surface); }
+  .sb-toggle{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--ink); cursor:pointer; }
+  .sb-toggle input{ accent-color:var(--accent); width:15px; height:15px; flex:none; }
+  .sb-select{ width:100%; margin-top:9px; padding:8px 9px; border:1px solid var(--line-strong); border-radius:var(--radius); background:var(--surface-raised); color:var(--ink-soft); font-size:12.5px; font-family:var(--sans); }
+  .sb-fields{ display:grid; gap:14px; margin-bottom:6px; }
+  .field-row label{ display:block; font-weight:700; font-size:13px; color:var(--ink); margin-bottom:6px; }
+  .field-row input{ width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:var(--radius); background:var(--surface); color:var(--ink); font-size:14px; font-family:var(--sans); }
+  .field-row input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .sb-output-wrap{ border:1px solid var(--line); border-radius:var(--radius); background:var(--surface-raised); padding:18px 20px; margin-top:22px; }
+  .sb-output-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:10px; flex-wrap:wrap; }
+  .sb-status{ font-family:var(--mono); font-size:11px; color:var(--accent-ink); }
+  .sb-output{ display:grid; gap:10px; }
+  .script-line{ font-family:var(--serif); font-style:italic; font-size:15px; color:var(--ink); line-height:1.6; margin:0; }
+  .blank{ font-style:normal; font-family:var(--sans); font-weight:600; font-size:13px; color:var(--accent-ink); background:var(--accent-soft); padding:1px 7px; border-radius:3px; }
+  .sb-actions{ display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+
+  /* ---- toolkit pages ---- */
+  .page-head{ margin-bottom:30px; }
+  .page-head h1{ font-size:clamp(26px,4.5vw,34px); margin-top:12px; max-width:20ch; }
+  .page-head .desc{ color:var(--ink-soft); margin-top:12px; max-width:56ch; font-size:15px; }
+  .group{ margin-top:32px; }
+  .group h3{ font-size:13px; letter-spacing:.05em; text-transform:uppercase; font-family:var(--mono); color:var(--accent-ink); margin-bottom:12px; }
+  .phrase{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:12px 16px; font-size:14.5px; color:var(--ink); font-family:var(--serif); font-style:italic; margin-bottom:8px; }
+
+  .gloss-item{ border-top:1px solid var(--line); padding:22px 0; }
+  .gloss-item:first-child{ border-top:none; padding-top:0; }
+  .gloss-item .name{ font-family:var(--serif); font-weight:600; font-size:18px; }
+  .gloss-item .who{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); margin-top:3px; }
+  .gloss-item .desc{ margin-top:9px; font-size:14.5px; color:var(--ink-soft); }
+
+  .culture-item{ display:flex; gap:16px; padding:18px 0; border-top:1px solid var(--line); }
+  .culture-item:first-child{ border-top:none; }
+  .culture-item .k{ flex:0 0 150px; font-weight:700; font-size:13.5px; color:var(--ink); }
+  .culture-item .v{ font-size:14.5px; color:var(--ink-soft); }
+
+  .wk-field{ margin-bottom:20px; }
+  .wk-field label{ display:block; font-weight:700; font-size:13.5px; margin-bottom:7px; color:var(--ink); }
+  .wk-field .hint{ font-size:12.5px; color:var(--ink-faint); margin-bottom:7px; }
+  .wk-field textarea{ width:100%; min-height:64px; padding:11px 13px; border:1px solid var(--line-strong); border-radius:var(--radius); background:var(--surface); color:var(--ink); font-family:var(--sans); font-size:14px; resize:vertical; }
+  .wk-field textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .wk-actions{ display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; align-items:center; }
+  .wk-status{ font-size:12.5px; color:var(--ink-faint); font-family:var(--mono); }
+
+  .deesc-signs{ display:grid; gap:8px; margin-top:14px; }
+  .deesc-signs li{ font-size:14px; color:var(--ink-soft); padding-left:18px; position:relative; }
+  .deesc-signs li:before{ content:"·"; position:absolute; left:2px; top:-4px; font-size:22px; color:var(--ink-faint); }
+
+  footer.site{ border-top:1px solid var(--line); padding:26px 0 48px; }
+  footer.site .wrap{ font-size:12px; color:var(--ink-faint); display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+
+  @media (max-width:560px){
+    .site-bar{ flex-wrap:wrap; }
+    .culture-item{ flex-direction:column; gap:4px; }
+    .culture-item .k{ flex:none; }
+  }
+
+  @media print{
+    header.site, footer.site, .no-print{ display:none !important; }
+    body{ background:#fff; }
+    main{ padding-block:0; }
+    .say-box, .checklist, .browse-card, .tool-card, .opt-card{ box-shadow:none; }
+  }
+</style>
+
+</head>
+<body>
+<header class="site">
+  <div class="wrap site-bar">
+    <a class="brand" href="#/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6"><circle cx="12" cy="12" r="9.3"/><path d="M15.3 8.7l-2 4.6-4.6 2 2-4.6 4.6-2z" fill="var(--accent)" stroke="none"/><circle cx="12" cy="12" r="1" fill="var(--ink)" stroke="none"/></svg>
+      <span><span class="brand-text">Conversation Compass</span><span class="brand-sub">YPO MENA · Regional Directors</span></span>
+    </a>
+    <nav class="site-nav" id="site-nav">
+      <a href="#/navigator">Navigator</a>
+      <a href="#/browse">Browse All</a>
+      <a href="#/toolkit/phrases">Phrase Bank</a>
+      <a href="#/toolkit/worksheet">Prep Worksheet</a>
+      <a href="#/toolkit/culture">Reading the Room</a>
+      <a href="#/toolkit/deescalate">If It Escalates</a>
+      <a href="#/toolkit/glossary">Frameworks</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Conversation Compass — a resource for YPO MENA Regional Directors.</span>
+    <span>Built on established negotiation, feedback and conflict-resolution research — see Frameworks.</span>
+  </div>
+</footer>
+
+<script>
+/* ============================= DATA ============================= */
+
+const AUDIENCES = [
+  { id:'member', label:'A Member', pill:'pill-member', blurb:'A fellow YPO member — in your chapter, forum, or region.' },
+  { id:'team',   label:'Someone You Manage', pill:'pill-team', blurb:'A staff member on your regional or chapter team.' },
+  { id:'peer',   label:'A Peer or Fellow Leader', pill:'pill-peer', blurb:'A fellow Regional Director, board colleague, or volunteer chair.' }
+];
+
+const AUD_LABEL = {member:'Member', team:'Team & Management', peer:'Peer & Board'};
+const AUD_PILL = {member:'pill-member', team:'pill-team', peer:'pill-peer'};
+
+const SCENARIOS = [
+{ id:'m1', audience:'member', title:'Saying "No" to a Member Request', teaser:'Declining a request for an exception, funding, or special treatment.',
+  frameworks:[['DESC Script','Bower & Bower'],['Getting to Yes — Interests, Not Positions','Fisher & Ury']],
+  setup:[
+    "Confirm the decision is genuinely final before the conversation — don't negotiate against yourself live.",
+    "Choose a real-time channel, call or in person; never deliver a \"no\" to a member by email or WhatsApp first.",
+    "Know the reasoning behind the policy or decision cold — vague reasons invite renegotiation.",
+    "Prepare one or two real alternatives you can offer, even small ones — a \"no\" lands better beside an option."
+  ],
+  say:[
+    "I want to walk you through the request for X and where we landed.",
+    "I know this matters to you, and I've decided we can't make an exception — here's why: [reason tied to policy, fairness, or precedent].",
+    "What I can do is [alternative]. Would that help?"
+  ],
+  remember:[
+    "Decline the request, not the member — reaffirm their standing and contribution before and after the \"no.\"",
+    "State the decision before fully unpacking the reasoning; a long justification first invites members to argue with each clause.",
+    "Hold the line kindly but don't over-apologize — repeated \"I'm so sorry\" signals the decision is negotiable.",
+    "Name the precedent risk plainly where relevant — members understand fairness across chapters."
+  ],
+  avoid:[
+    "Softening the \"no\" into a \"maybe\" just to end the discomfort.",
+    "Blaming \"head office\" or \"the board\" as a faceless villain — own the decision as a Regional Director.",
+    "Debating the policy itself mid-conversation — offer to revisit it separately, through the right channel."
+  ],
+  after:[
+    "Send a short written summary of what was decided and any alternative offered.",
+    "Flag it to your team if this is the third similar request — it may signal a real policy gap."
+  ],
+  script:{
+    empathyDefault:false, boundaryDefault:true,
+    fields:[
+      {id:'request', label:"What did they ask for?", placeholder:'a fourth guest pass to the annual summit', tag:'their request'},
+      {id:'reason', label:"Why can't you say yes? (policy, fairness, precedent)", placeholder:'we cap guest passes at three per member to keep the summit at capacity for everyone', tag:'your reason'},
+      {id:'alternative', label:'What can you offer instead?', placeholder:'add them to the waitlist and prioritize them next year', tag:'your alternative'}
+    ],
+    lines:[
+      "I want to walk you through the request for {request} and where we landed.",
+      "I know this matters to you, and I've decided we can't make an exception — here's why: {reason}.",
+      "What I can do is {alternative}. Would that help?"
+    ]
+  }},
+{ id:'m2', audience:'member', title:'Addressing a Conduct Issue', teaser:"A member's behavior at an event, in forum, or online crossed a line.",
+  frameworks:[['Crucial Conversations — STATE','Patterson, Grenny, McMillan & Switzler'],['Difficult Conversations — the Identity Conversation','Stone, Patton & Heen']],
+  setup:[
+    "Get the facts straight from more than one source before you sit down.",
+    "Choose a private setting, in person or by video — never raise conduct in front of peers first.",
+    "Check your own emotional state; if you're angry, delay a day, not much more.",
+    "Anticipate the identity hit: most members hear \"you violated the code\" as \"you think I'm a bad person.\""
+  ],
+  say:[
+    "Here's what I observed, or was told happened: [specific, observable facts].",
+    "The story I'm telling myself is X — help me understand your side.",
+    "What was going on for you in that moment?"
+  ],
+  remember:[
+    "Separate the behavior from the person's identity as a leader — most will still want to protect their reputation; use that.",
+    "Facts first, interpretation second — \"you were rude\" is a conclusion; \"you interrupted three members\" is a fact.",
+    "Make it safe before making your point — restate a mutual purpose (\"I want you to thrive in this chapter\") early.",
+    "Document what was said and agreed, especially if this could escalate to a formal complaint."
+  ],
+  avoid:[
+    "Leading with the policy citation — start with facts and relationship, cite policy once purpose is established.",
+    "Public correction, even implied (\"some of you have been...\") — always name it privately and directly.",
+    "Letting silence read as forgiveness — if no change follows, a firmer follow-up is needed quickly."
+  ],
+  after:[
+    "Confirm next steps and any formal documentation required under YPO policy.",
+    "Check in privately within two weeks to reinforce the change, not just police it."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'facts', label:'What did you observe or hear happened? (facts only)', placeholder:'you raised your voice at another member during the forum dinner on Saturday', tag:'the facts'},
+      {id:'story', label:"What story are you telling yourself about it?", placeholder:"that you were provoked, but I don't know the full picture yet", tag:'your story'}
+    ],
+    lines:[
+      "Here's what I observed, or was told happened: {facts}.",
+      "The story I'm telling myself is {story} — help me understand your side.",
+      "What was going on for you in that moment?"
+    ]
+  }},
+{ id:'m3', audience:'member', title:'Non-Renewal or Retention Risk', teaser:'A member is disengaging, behind on dues, or considering leaving.',
+  frameworks:[['Getting to Yes — Interests, Not Positions','Fisher & Ury'],['Nonviolent Communication — OFNR','Rosenberg']],
+  setup:[
+    "Review their engagement history before calling — attendance, forum activity, recent life events.",
+    "Assume there's a real, specific reason, not just \"busy\" — your job is to find it, not sell membership.",
+    "Pick a warm opener unconnected to money first if dues are part of the issue.",
+    "Know what flexibility you actually have — payment plans, forum changes, sabbatical status — before you ask."
+  ],
+  say:[
+    "I've noticed you've missed the last three forum meetings — that's not like you.",
+    "I imagine something's shifted. What's going on, and what would make this membership valuable to you right now?",
+    "Would it help to [specific option] rather than stepping away entirely?"
+  ],
+  remember:[
+    "Find the interest behind the position — \"I'm too busy\" often means \"I'm not getting value,\" not \"I have no time.\"",
+    "Retention conversations are consultative, not sales pitches — members can tell the difference immediately.",
+    "It's fine for the honest answer to be that YPO isn't the right fit right now — protect the relationship for later.",
+    "Loop in the chapter chair or membership committee only with the member's knowledge."
+  ],
+  avoid:[
+    "Opening with the invoice or dues balance — lead with relationship, not receivables.",
+    "Guilt (\"the chapter needs you\") — appeal to their goals, not your metrics.",
+    "Promising exceptions you can't actually deliver just to keep them in the room."
+  ],
+  after:[
+    "Document the reason for disengagement with care — patterns across members point to real chapter issues.",
+    "Set a specific follow-up date, not \"I'll check in sometime.\""
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'observation', label:'What have you noticed?', placeholder:"you've missed the last three forum meetings", tag:"what you've noticed"},
+      {id:'option', label:'What flexible option could you offer?', placeholder:'a payment plan or a term on sabbatical status', tag:'the option you can offer'}
+    ],
+    lines:[
+      "I've noticed {observation} — that's not like you.",
+      "I imagine something's shifted. What's going on, and what would make this membership valuable to you right now?",
+      "Would it help to {option} rather than stepping away entirely?"
+    ]
+  }},
+{ id:'m4', audience:'member', title:'Mediating Conflict Between Two Members', teaser:'Two members are in open or simmering conflict.',
+  frameworks:[['Thomas-Kilmann Conflict Mode Instrument','Thomas & Kilmann'],['Nonviolent Communication','Rosenberg']],
+  setup:[
+    "Meet each member separately first to understand their view and preferred conflict style.",
+    "Decide whether this needs you as mediator or just a nudge to resolve it themselves.",
+    "Set ground rules before the joint conversation: no interrupting, speak from your own experience.",
+    "Choose a neutral location, not either member's usual seat in forum."
+  ],
+  say:[
+    "You both care about this chapter — that's why we're here.",
+    "[Name A], share what happened from your side. [Name B], you'll get the same time.",
+    "It sounds like what matters to you is X — is that right?"
+  ],
+  remember:[
+    "Diagnose each member's default conflict mode — competing, avoiding, accommodating, compromising, collaborating — it tells you how to structure the room.",
+    "Your job is the process, not the verdict — you're not there to decide who's right.",
+    "Translate accusations into needs in real time: \"he's always late\" becomes \"reliability matters to you.\"",
+    "Aim for collaborating as the goal, but a working compromise is an acceptable real-world outcome."
+  ],
+  avoid:[
+    "Taking sides, even subtly, through body language or who you address first.",
+    "Letting one member's stronger personality dominate airtime — enforce equal turns explicitly.",
+    "Rushing to a resolution before both feel heard — unheard members reopen conflict later, often worse."
+  ],
+  after:[
+    "Agree on one or two concrete behavior changes, not a vague \"let's move forward.\"",
+    "Check with both separately a few weeks later — never assume silence means resolution."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'nameA', label:"First member's name", placeholder:'Khalid', tag:'their name'},
+      {id:'nameB', label:"Second member's name", placeholder:'Omar', tag:'their name'},
+      {id:'need', label:'What underlying need seems to be driving the conflict?', placeholder:'being kept in the loop on chapter decisions', tag:'the need you’re naming'}
+    ],
+    lines:[
+      "You both care about this chapter — that's why we're here.",
+      "{nameA}, share what happened from your side. {nameB}, you'll get the same time.",
+      "It sounds like what matters to you is {need} — is that right?"
+    ]
+  }},
+{ id:'m5', audience:'member', title:'Volunteer Leader Underperformance', teaser:"A chapter chair or forum moderator isn't delivering, and you have no formal authority over them.",
+  frameworks:[['SBI — Situation-Behavior-Impact','Center for Creative Leadership'],['GROW Model','Whitmore']],
+  setup:[
+    "Remember: this is an appeal to a peer volunteer, not a performance review — tone accordingly.",
+    "Gather two or three specific, dated examples, not a general impression.",
+    "Reflect on what they might be dealing with — volunteer roles often lose to real jobs and family under pressure.",
+    "Book time that doesn't feel like an ambush appended to another meeting."
+  ],
+  say:[
+    "At the last two chair calls, the pre-reads went out the morning of, which meant members came unprepared.",
+    "What does a great chair term look like to you? What's getting in the way?"
+  ],
+  remember:[
+    "Lead with appreciation for taking on an unpaid, demanding role before naming the gap.",
+    "Use Situation-Behavior-Impact to keep it observable and undebatable — behavior and impact, not character judgments.",
+    "Co-create the fix with GROW's Options and Will rather than prescribing it — volunteers disengage from mandates.",
+    "Offer real support: a co-chair, a template, admin help — not just higher expectations."
+  ],
+  avoid:[
+    "Threatening removal as an opening move — reserve it as a genuine last resort, stated plainly if it comes to that.",
+    "Comparing them to a predecessor or another chapter's chair.",
+    "Making it only about regional standards — make it about their own goals for the role."
+  ],
+  after:[
+    "Put the one or two agreed changes in writing, framed as support, not a warning.",
+    "Check in after the next forum cycle to reinforce progress."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'situation', label:'When or where did this happen? (situation)', placeholder:'the last two chair calls', tag:'the situation'},
+      {id:'behavior', label:'What specifically happened? (behavior)', placeholder:'the pre-reads went out the morning of', tag:'the behavior'},
+      {id:'impact', label:'What was the effect? (impact)', placeholder:'members came unprepared', tag:'the impact'}
+    ],
+    lines:[
+      "At {situation}, {behavior}, which meant {impact}.",
+      "What does a great chair term look like to you? What's getting in the way?"
+    ]
+  }},
+{ id:'m6', audience:'member', title:'Delivering an Unpopular Board Decision', teaser:'A dues increase, event cancellation, or policy change members will not like.',
+  frameworks:[['Difficult Conversations — the Three Conversations','Stone, Patton & Heen'],['Crucial Conversations — Master My Stories','Patterson, Grenny, McMillan & Switzler']],
+  setup:[
+    "Get the full rationale and data behind the decision — members will ask \"why,\" not just \"what.\"",
+    "Decide what you can and can't disclose: confidential board deliberations versus the outcome.",
+    "Anticipate the emotional layer — members may hear \"the region doesn't value us,\" not just policy.",
+    "Choose to deliver this live, by call or town hall, before it circulates informally."
+  ],
+  say:[
+    "The board has decided [X], effective [date].",
+    "Here's the reasoning: [data, constraints, alternatives considered].",
+    "This isn't a reflection of how the board or I see this chapter."
+  ],
+  remember:[
+    "Separate what happened, feelings, and identity — most of the friction lives in the last two, not the facts.",
+    "Don't relitigate the decision in the room if it's genuinely final — clarify, don't reopen.",
+    "Acknowledge the impact honestly before defending the logic — \"I know this is unwelcome\" costs nothing and buys real trust.",
+    "Have a channel ready for questions you can't answer on the spot."
+  ],
+  avoid:[
+    "Blaming an anonymous \"they\" — international board, HQ — you represent the decision now; own it.",
+    "Over-explaining out of guilt — thorough once beats defensive repetition.",
+    "Promising to \"fight for\" a reversal you don't actually intend to pursue."
+  ],
+  after:[
+    "Send a short written FAQ addressing the top three objections you expect.",
+    "Personally follow up with your most vocal or most valuable members within a week."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:true,
+    fields:[
+      {id:'decision', label:'What was decided?', placeholder:'a 12% dues increase', tag:'the decision'},
+      {id:'date', label:'Effective when?', placeholder:'the new fiscal year', tag:'the effective date'},
+      {id:'reasoning', label:"What's the reasoning?", placeholder:'rising venue costs and a flat sponsorship pool this year', tag:'the reasoning'}
+    ],
+    lines:[
+      "The board has decided {decision}, effective {date}.",
+      "Here's the reasoning: {reasoning}.",
+      "This isn't a reflection of how the board or I see this chapter."
+    ]
+  }},
+{ id:'m7', audience:'member', title:'Managing an Entitled or Demanding Member', teaser:'A member consistently pushes boundaries or escalates when told no.',
+  frameworks:[['DESC Script','Bower & Bower'],['Crucial Accountability — CPR','Patterson, Grenny, McMillan & Switzler']],
+  setup:[
+    "Establish whether this is one-off Content or a repeated Pattern — that changes what you address.",
+    "Gather two or three concrete instances if it's a pattern; vague \"you always\" claims invite denial.",
+    "Decide your actual boundary in advance — what you will and won't accept going forward.",
+    "Expect pushback or charm as a response; plan to stay on message either way."
+  ],
+  say:[
+    "This is the third time this has come up — I want to talk about the pattern, not just today.",
+    "When [behavior happens], it puts me and the chapter in a difficult position, so going forward I need [specific boundary], or [consequence]."
+  ],
+  remember:[
+    "Escalate from Content to Pattern to Relationship only as the behavior repeats — don't jump straight to \"this is damaging our relationship\" on a first offense.",
+    "State the boundary once, clearly, and hold it — repeating it without new information reads as uncertainty.",
+    "Entitlement often masks status anxiety in high-achieving members — curiosity can defuse more than firmness alone.",
+    "Know your actual escalation path before you threaten it."
+  ],
+  avoid:[
+    "Matching their intensity or getting pulled into a status contest.",
+    "Making exceptions under pressure that you wouldn't make for anyone else — it teaches escalation works.",
+    "Personalizing it — this is a pattern to manage, not a character verdict to deliver."
+  ],
+  after:[
+    "Document the pattern and the boundary you set, dated, in case it recurs.",
+    "Note if this is a broader signal about unclear chapter norms, not just one member."
+  ],
+  script:{
+    empathyDefault:false, boundaryDefault:true,
+    fields:[
+      {id:'count', label:'How many times has this come up?', placeholder:'third', tag:'the count'},
+      {id:'behavior', label:"What's the specific behavior?", placeholder:'you ask the chapter coordinator to bend the guest policy', tag:'the behavior'},
+      {id:'boundary', label:'What do you need going forward?', placeholder:'requests go through the standard process, no exceptions', tag:'your boundary'},
+      {id:'consequence', label:'What happens if it continues? (optional)', placeholder:"I'll need to raise it with the membership committee", tag:'the consequence'}
+    ],
+    lines:[
+      "This is the {count} time this has come up — I want to talk about the pattern, not just today.",
+      "When {behavior}, it puts me and the chapter in a difficult position, so going forward I need {boundary}, or {consequence}."
+    ]
+  }},
+{ id:'m8', audience:'member', title:'Not Meeting Chapter Commitments', teaser:'A member is falling short on attendance, confidentiality, or engagement.',
+  frameworks:[['SBI — Situation-Behavior-Impact','Center for Creative Leadership'],['Crucial Accountability — CPR','Patterson, Grenny, McMillan & Switzler']],
+  setup:[
+    "Pull the actual record — attendance log, specific confidentiality lapse, engagement data.",
+    "Distinguish a first lapse from a pattern before you decide how firm to be.",
+    "Consider whether a life event explains it — ask before you assume disengagement.",
+    "Choose a direct, warm tone — this is accountability among peers, not discipline from an employer."
+  ],
+  say:[
+    "In the last two forum cycles, you've missed three of four meetings without notice, and that's affecting the group's trust and rhythm.",
+    "Before we talk about what happens next, what's going on?"
+  ],
+  remember:[
+    "Forum and chapter commitments exist because the model depends on consistency — the stakes are peer trust, not compliance.",
+    "Use CPR: address the specific Content once, the Pattern if it recurs, and raise Relationship risk only if it's genuinely at stake.",
+    "Reconnect them to why they joined — impact lands better tied to their own original goals.",
+    "Give one clear, time-bound expectation for what changes next."
+  ],
+  avoid:[
+    "Letting confidentiality breaches slide because the member is otherwise valuable — it erodes forum trust for everyone.",
+    "Framing it as a favor you're asking rather than a shared commitment they made.",
+    "Waiting until it's a crisis — small, early conversations prevent the need for a hard one later."
+  ],
+  after:[
+    "Confirm the agreed expectation in writing, briefly and without a punitive tone.",
+    "Loop in the forum moderator only with the member's awareness."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:true,
+    fields:[
+      {id:'timeframe', label:'Over what period?', placeholder:'the last two forum cycles', tag:'the timeframe'},
+      {id:'behavior', label:"What's the specific pattern?", placeholder:"you've missed three of four meetings without notice", tag:'the behavior'},
+      {id:'impact', label:"What's the impact?", placeholder:"the group's trust and rhythm", tag:'the impact'}
+    ],
+    lines:[
+      "In {timeframe}, you've {behavior}, and that's affecting {impact}.",
+      "Before we talk about what happens next, what's going on?"
+    ]
+  }},
+
+{ id:'t1', audience:'team', title:'End-of-Year Review With Tough Messages', teaser:'A formal review where you must deliver honest, hard feedback.',
+  frameworks:[['SBI — Situation-Behavior-Impact','Center for Creative Leadership'],['Radical Candor','Kim Scott'],['GROW Model','Whitmore']],
+  setup:[
+    "Separate facts from general impression — pull specific, dated examples for every rating below \"meets.\"",
+    "Draft the hardest sentence in advance, word for word — reviews go off-track in the first two minutes.",
+    "Check your ratio: reviews that are only critical or only complimentary both fail to land.",
+    "Book enough time and a private room — never compress a real review into fifteen minutes."
+  ],
+  say:[
+    "I want to talk through this year honestly, including some parts that are hard to hear.",
+    "In [situation], you [specific behavior], and the impact was [outcome].",
+    "I'm telling you this because I want you to grow here, not despite that."
+  ],
+  remember:[
+    "Challenging directly only works alongside caring personally — one without the other is obnoxious aggression or ruinous empathy.",
+    "No surprises rule: nothing in a year-end review should be the first time they're hearing it.",
+    "End on the forward-look — a real goal and real options for the next period, not just a scorecard of the last one.",
+    "Written and verbal messages must match exactly — misalignment there is the top source of review disputes."
+  ],
+  avoid:[
+    "The \"feedback sandwich\" — praise, criticism, praise — the criticism gets lost or the praise gets discounted.",
+    "Vague language like \"needs to step up\" without a specific, observable behavior attached.",
+    "Letting their reaction derail the message — hold space, but don't retract accurate feedback because it's unwelcome."
+  ],
+  after:[
+    "Send the written summary within 48 hours while it's fresh for both of you.",
+    "Schedule a 30-day check-in on the specific development goals, not just at the next formal cycle."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'situation', label:'Situation — when or where?', placeholder:'the Q3 regional summit planning cycle', tag:'the situation'},
+      {id:'behavior', label:'Specific behavior', placeholder:'three deliverables slipped past their deadline without a heads-up', tag:'the behavior'},
+      {id:'outcome', label:'Impact', placeholder:'the team had to scramble and two vendor calls were rescheduled', tag:'the impact'}
+    ],
+    lines:[
+      "I want to talk through this year honestly, including some parts that are hard to hear.",
+      "In {situation}, you {behavior}, and the impact was {outcome}.",
+      "I'm telling you this because I want you to grow here, not despite that."
+    ]
+  }},
+{ id:'t2', audience:'team', title:'Ongoing Underperformance', teaser:"A pattern that hasn't improved despite earlier feedback.",
+  frameworks:[['Crucial Accountability — CPR','Patterson, Grenny, McMillan & Switzler'],['GROW Model','Whitmore']],
+  setup:[
+    "Confirm this really is a pattern — check you gave clear, specific feedback the first time, not just a hint.",
+    "Rule out a resourcing or role-clarity problem before assuming it's a will, not a skill, issue.",
+    "Decide in advance what happens if this conversation doesn't change the pattern.",
+    "Loop in HR guidance beforehand if a formal process may follow."
+  ],
+  say:[
+    "We've talked about this before, on [date]. It's still happening, so I want to address the pattern, not just today's example.",
+    "Help me understand what's getting in the way.",
+    "What would 'meeting expectations' look like to you by [date], and what do you need from me to get there?"
+  ],
+  remember:[
+    "Naming that this is the second or third conversation about the same issue is itself important information — don't skip it to stay comfortable.",
+    "Diagnose motivation versus ability before prescribing a fix — a skill gap and a motivation gap need different responses.",
+    "Set one specific, measurable, time-bound expectation — ambiguity here is what turns into a dispute later.",
+    "Be honest about consequences if the pattern continues — clarity is kinder than a surprise later."
+  ],
+  avoid:[
+    "Repeating the same vague feedback a third time and hoping tone alone changes the outcome.",
+    "Skipping HR/People guidance when a formal process is a realistic next step.",
+    "Letting the conversation drift into character judgments instead of the specific pattern."
+  ],
+  after:[
+    "Document the conversation, the expectation, and the timeline in writing — for their benefit and yours.",
+    "Set a firm check-in date, not an open-ended \"let's see how it goes.\""
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:true,
+    fields:[
+      {id:'priorDate', label:'When did you first raise this?', placeholder:'our 1:1 in March', tag:'the date you first raised it'},
+      {id:'targetDate', label:'By when should things look different?', placeholder:'the end of this quarter', tag:'the target date'}
+    ],
+    lines:[
+      "We've talked about this before, on {priorDate}. It's still happening, so I want to address the pattern, not just today's example.",
+      "Help me understand what's getting in the way.",
+      "What would 'meeting expectations' look like to you by {targetDate}, and what do you need from me to get there?"
+    ]
+  }},
+{ id:'t3', audience:'team', title:'Sharing When Something Has Gone Wrong', teaser:'You need to deliver news that a mistake or deadline failure has happened.',
+  frameworks:[['Difficult Conversations — the Three Conversations','Stone, Patton & Heen'],['Crucial Conversations — STATE','Patterson, Grenny, McMillan & Switzler']],
+  setup:[
+    "Get the facts straight and complete before you speak — half-information erodes trust faster than bad news itself.",
+    "Decide who needs to know, in what order, and how fast — don't let people hear it secondhand.",
+    "If it's your own mistake, plan to own it first, without minimizing or over-explaining.",
+    "Prepare the \"what now,\" not just the \"what happened\" — bad news lands better with a next step attached."
+  ],
+  say:[
+    "I need to tell you something that's gone wrong: [specific, factual account].",
+    "This was my call, and it didn't work out. Here's what I got wrong.",
+    "Here's what we're doing about it, and here's what I need from you."
+  ],
+  remember:[
+    "The \"what happened\" conversation is rarely the hard part — the feelings and identity conversations underneath usually are.",
+    "Deliver bad news directly and early — delay reads as either concealment or panic, both worse than the news itself.",
+    "Accountability without self-flagellation keeps the room focused on solving, not managing your guilt.",
+    "If it's someone else's mistake, share the facts, then genuinely ask their account before concluding intent."
+  ],
+  avoid:[
+    "Burying the headline in context — say the hard sentence early, then explain.",
+    "Assigning blame in the same breath as the facts, especially before all facts are in.",
+    "Letting the story spread informally before you address it directly."
+  ],
+  after:[
+    "Put a short written record of what happened and what's changing, especially for governance or compliance matters.",
+    "Revisit as a team once the immediate fire is out: what does this teach us structurally?"
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'account', label:'What went wrong? (facts)', placeholder:"the sponsor deck went out with last year's numbers", tag:'what went wrong'},
+      {id:'whatIGotWrong', label:'If it was your call — what did you get wrong? (leave blank if not yours)', placeholder:"I didn't double-check the final version before it sent", tag:'what you got wrong'},
+      {id:'nextSteps', label:'What are you doing about it?', placeholder:'sending a corrected version tonight and calling the sponsor personally', tag:'the next steps'},
+      {id:'ask', label:'What do you need from them?', placeholder:'a second set of eyes on outbound materials going forward', tag:'what you need from them'}
+    ],
+    lines:[
+      "I need to tell you something that's gone wrong: {account}.",
+      "This was my call, and it didn't work out. Here's what I got wrong: {whatIGotWrong}.",
+      "Here's what we're doing about it: {nextSteps}. And here's what I need from you: {ask}."
+    ]
+  }},
+{ id:'t4', audience:'team', title:'Denying a Raise, Promotion, or Bonus', teaser:'You have to say no to a compensation or advancement request.',
+  frameworks:[['DESC Script','Bower & Bower'],['Getting to Yes — Objective Criteria','Fisher & Ury']],
+  setup:[
+    "Ground the decision in objective criteria you can actually name: budget, market bands, performance data, role scope.",
+    "Know what you can offer instead — development path, scope, timeline for revisit — before the conversation.",
+    "Anticipate this landing as an identity hit; plan warmth alongside the \"no.\"",
+    "Never let them find out through a payroll system or a colleague's comparison first."
+  ],
+  say:[
+    "You raised a request for [raise/promotion/bonus]. I've reviewed it, and I'm not able to approve it right now.",
+    "Here's why, tied to [budget cycle, band, scope, or performance criteria].",
+    "Here's what would need to be true for this to be a yes, and by when."
+  ],
+  remember:[
+    "Use objective, external criteria rather than personal judgment alone — it's harder to argue with a market band than an opinion.",
+    "Say the decision plainly before the full rationale — over-justifying invites clause-by-clause negotiation.",
+    "If performance is genuinely part of the reason, that's a separate, SBI-based conversation, not an aside here.",
+    "A clear no with a real path beats a soft maybe that goes nowhere."
+  ],
+  avoid:[
+    "Blaming budget alone when performance or scope is actually the real reason.",
+    "Comparing them to a specific colleague by name.",
+    "Promising a future increase you don't have the authority or intention to deliver."
+  ],
+  after:[
+    "Document the objective reasoning and any agreed path forward, dated.",
+    "If a path was offered, set a concrete review date — and actually revisit it."
+  ],
+  script:{
+    empathyDefault:false, boundaryDefault:true,
+    fields:[
+      {id:'request', label:'What did they ask for?', placeholder:'a promotion to senior coordinator', tag:'their request'},
+      {id:'criteria', label:"What's the objective reason? (budget, band, scope, performance)", placeholder:"the role isn't opening this cycle and the scope doesn't yet match the band", tag:'the objective criteria'},
+      {id:'conditions', label:'What would need to be true for a yes?', placeholder:'taking on the vendor relationship end-to-end for two quarters', tag:'the conditions for a yes'},
+      {id:'reviewDate', label:'When will you revisit it?', placeholder:'the next budget cycle in January', tag:'the review date'}
+    ],
+    lines:[
+      "You raised a request for {request}. I've reviewed it, and I'm not able to approve it right now.",
+      "Here's why, tied to {criteria}.",
+      "Here's what would need to be true for this to be a yes: {conditions}. Let's plan to revisit this by {reviewDate}."
+    ]
+  }},
+{ id:'t5', audience:'team', title:'Role Change or Restructuring', teaser:"An employee's role, title, or responsibilities are changing, often not for the better.",
+  frameworks:[["Bridges' Transition Model","William Bridges"],['SBI — Situation-Behavior-Impact','Center for Creative Leadership']],
+  setup:[
+    "Understand this is a psychological transition, not just an org chart update — plan for grief, not just logistics.",
+    "Get the business rationale clear and honest — people accept hard news more easily than vague ones.",
+    "Decide what's actually fixed versus still open for their input — false flexibility erodes trust fast.",
+    "Choose timing carefully; avoid Fridays or right before a major personal event if avoidable."
+  ],
+  say:[
+    "Your role is changing, and I want to be straightforward with you about what that means.",
+    "I know this isn't the direction you were hoping for, and that's a real loss to sit with.",
+    "There's going to be an adjustment period — here's what support looks like during it."
+  ],
+  remember:[
+    "People rarely resist change itself; they resist the loss it represents — name the loss explicitly.",
+    "The uncertain middle period is uncomfortable but necessary — don't rush past it to false reassurance.",
+    "Give them a real new beginning to move toward, not just an ending to leave behind.",
+    "What they lose — status, team, title, autonomy — matters as much as what they're gaining."
+  ],
+  avoid:[
+    "Overselling the change as purely positive when it isn't — people see through spin and it costs credibility.",
+    "Announcing it without warning to someone with tenure or seniority.",
+    "Treating questions about \"why\" as resistance to manage rather than genuine grief to acknowledge."
+  ],
+  after:[
+    "Check in one-on-one within the first two weeks of the transition, not just at the next scheduled sync.",
+    "Watch for disengagement signals during the adjustment period — it's the highest-risk window for attrition."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'change', label:"What's specifically changing?", placeholder:'the events portfolio is moving to a new hire, and your role is shifting to membership', tag:"what's changing"},
+      {id:'support', label:'What support looks like during the transition', placeholder:'weekly check-ins with me and no new deadlines for the first month', tag:'the support'}
+    ],
+    lines:[
+      "Your role is changing — specifically, {change} — and I want to be straightforward with you about what that means.",
+      "I know this isn't the direction you were hoping for, and that's a real loss to sit with.",
+      "There's going to be an adjustment period — here's what support looks like during it: {support}."
+    ]
+  }},
+{ id:'t6', audience:'team', title:'Mediating Conflict Between Two Team Members', teaser:'Two direct reports, or peers on your team, are in conflict.',
+  frameworks:[['Thomas-Kilmann Conflict Mode Instrument','Thomas & Kilmann'],['Structured Mediation Practice','']],
+  setup:[
+    "Meet each person separately first — understand facts and their default conflict style before any joint session.",
+    "Establish whether this needs a facilitated conversation or a documented, HR-aware process for repeated or serious conflict.",
+    "Set explicit ground rules before the joint meeting: equal airtime, no interrupting, describe impact not intent.",
+    "Choose neutral ground and adequate, uninterrupted time."
+  ],
+  say:[
+    "You're both valuable to this team, and this is affecting both of you and the people around you.",
+    "Describe what's happening from your side, without describing their motives — just the impact on you.",
+    "What I'm hearing is a difference in [need or style] — let's work from there."
+  ],
+  remember:[
+    "Your role is facilitator, not judge — resist being pulled into ruling on who's \"right.\"",
+    "Identify each person's default conflict style — it explains a lot of the friction pattern itself.",
+    "Push toward collaborating where possible, but a working compromise is a legitimate real-world outcome.",
+    "If conduct crosses into harassment or hostility, this stops being a mediation and becomes an HR matter."
+  ],
+  avoid:[
+    "Letting the joint session start before each side has been heard separately.",
+    "Allowing either person to characterize the other's intent rather than describe impact.",
+    "Treating a resolved joint meeting as the end of the process."
+  ],
+  after:[
+    "Agree on one or two specific behavior commitments from each side, in writing.",
+    "Follow up with each separately within a few weeks — don't assume quiet means resolved."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'nameA', label:"First person's name", placeholder:'Sara', tag:'their name'},
+      {id:'nameB', label:"Second person's name", placeholder:'Yusuf', tag:'their name'},
+      {id:'need', label:'What underlying need or style difference seems to be at play?', placeholder:'one needs written follow-up, the other prefers verbal updates', tag:'the need or style difference'}
+    ],
+    lines:[
+      "You're both valuable to this team, and this is affecting both of you and the people around you.",
+      "Describe what's happening from your side, without describing {nameB}'s motives — just the impact on you. {nameB}, you'll get the same time.",
+      "What I'm hearing is a difference in {need} — let's work from there."
+    ]
+  }},
+{ id:'t7', audience:'team', title:'Addressing Unprofessional Conduct', teaser:"An employee's tone, language, or treatment of others needs to be addressed directly.",
+  frameworks:[['SBI — Situation-Behavior-Impact','Center for Creative Leadership'],['Crucial Accountability — CPR','Patterson, Grenny, McMillan & Switzler']],
+  setup:[
+    "Gather specific, dated, witnessed instances — conduct conversations need to be precise, not impressionistic.",
+    "Check whether this needs to involve HR from the outset; some conduct issues require formal process immediately.",
+    "Decide your tone in advance: direct and serious, not punitive theater or excessive apology for raising it.",
+    "Book a private, uninterrupted setting — never address conduct in a group setting or over chat."
+  ],
+  say:[
+    "In [meeting or setting] on [date], you [specific behavior]. The impact was [effect on others, team, or work].",
+    "That's not the standard here, and it needs to change starting now.",
+    "Is there context I should understand? That doesn't change the standard, but I want to hear it."
+  ],
+  remember:[
+    "Conduct conversations need less cushioning than performance ones — clarity protects everyone, including the employee.",
+    "Distinguish a first incident from a repeated one — the second requires naming the pattern explicitly and considering formal steps.",
+    "Document immediately after, while details are precise — memory degrades fast and documentation protects both parties.",
+    "State any consequences plainly, not by implication."
+  ],
+  avoid:[
+    "Softening a serious issue with excessive empathy language that blurs the message.",
+    "Debating intent at length — impact is what you're addressing; intent is a separate, secondary question.",
+    "Handling repeat or serious conduct issues without HR involvement."
+  ],
+  after:[
+    "File documentation per your organization's process, promptly and factually.",
+    "Set a clear timeline for re-checking the behavior, and act on it if it recurs."
+  ],
+  script:{
+    empathyDefault:false, boundaryDefault:true,
+    fields:[
+      {id:'setting', label:'What meeting or setting?', placeholder:'the Monday team huddle', tag:'the setting'},
+      {id:'date', label:'When?', placeholder:'this past Monday', tag:'the date'},
+      {id:'behavior', label:'Specific behavior', placeholder:'you cut off a colleague twice and raised your voice', tag:'the behavior'},
+      {id:'impact', label:'Impact on others, team, or work', placeholder:'two team members told me afterward they felt uncomfortable speaking up', tag:'the impact'}
+    ],
+    lines:[
+      "In {setting} on {date}, you {behavior}. The impact was {impact}.",
+      "That's not the standard here, and it needs to change starting now.",
+      "Is there context I should understand? That doesn't change the standard, but I want to hear it."
+    ]
+  }},
+{ id:'t8', audience:'team', title:'Letting Someone Go', teaser:'You need to deliver a termination or a difficult exit conversation.',
+  frameworks:[['Difficult Conversations','Stone, Patton & Heen'],["Radical Candor's Compassionate Directness",'Kim Scott']],
+  setup:[
+    "Complete every legal, HR, and documentation step beforehand — this conversation should contain no new information about \"why.\"",
+    "Rehearse the opening sentence exactly — clarity in the first fifteen seconds is a kindness, not cruelty.",
+    "Coordinate logistics in advance so the meeting itself stays humane and short.",
+    "Prepare for a range of reactions, and plan not to over-explain or negotiate once the decision is delivered."
+  ],
+  say:[
+    "This is a difficult conversation. We've made the decision to end your employment, effective [date].",
+    "This is a final decision — I'm not able to change it in this meeting.",
+    "I want to make sure the practical next steps are clear, and to treat this transition with respect."
+  ],
+  remember:[
+    "This should never be the first time someone hears they're at risk — if it is, something upstream failed.",
+    "Directness here is the compassionate choice — a vague or drawn-out delivery prolongs suffering for the person being let go.",
+    "Stick to logistics and support once the decision is delivered — don't reopen the \"why.\"",
+    "Your own composure matters; this is one of the moments people remember about an organization's character for years."
+  ],
+  avoid:[
+    "Softening language that creates false hope when the decision is final.",
+    "Over-apologizing to the point it centers your discomfort over their experience.",
+    "Delivering this without HR and legal sign-off on process and wording."
+  ],
+  after:[
+    "Communicate any necessary, respectful message to the remaining team without disclosing confidential details.",
+    "Ensure agreed practical support — references, transition help — is actually followed through."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:true,
+    fields:[
+      {id:'date', label:'Effective date', placeholder:'this Friday', tag:'the effective date'},
+      {id:'nextSteps', label:'Practical next steps (severance, access, references)', placeholder:"severance and final pay details are in the letter I'm handing you, and I'm happy to be a reference", tag:'the next steps'}
+    ],
+    lines:[
+      "This is a difficult conversation. We've made the decision to end your employment, effective {date}.",
+      "This is a final decision — I'm not able to change it in this meeting.",
+      "I want to make sure the practical next steps are clear, and to treat this transition with respect: {nextSteps}."
+    ]
+  }},
+
+{ id:'p1', audience:'peer', title:'Disagreeing With a Fellow Regional Director', teaser:"Pushing back on a peer's decision or position without damaging the relationship.",
+  frameworks:[['Crucial Conversations — Mutual Purpose & Respect','Patterson, Grenny, McMillan & Switzler'],['Getting to Yes','Fisher & Ury']],
+  setup:[
+    "Get clear on what you actually disagree with — the decision, the process, or how it was communicated are three different problems.",
+    "Raise it directly with them first, privately, before raising it in a group setting.",
+    "Identify the mutual purpose you both share to anchor the conversation.",
+    "Separate their position from their underlying interest — you may agree on the interest even while disagreeing on the position."
+  ],
+  say:[
+    "I think we both want [shared goal] — I want to raise something I see differently.",
+    "My view is [X], and here's the reasoning.",
+    "What am I missing from where you're sitting?"
+  ],
+  remember:[
+    "When people feel safety and mutual respect, almost any content can be discussed — protect safety first, content second.",
+    "Disagreement with a peer carries real relationship risk with no formal hierarchy to fall back on — invest extra care in tone.",
+    "Look for the shared interest beneath the positional disagreement — it's usually there even when positions look opposed.",
+    "Know when to escalate a genuine impasse to a shared forum rather than letting it fester one-on-one."
+  ],
+  avoid:[
+    "Building a coalition against them before talking to them directly.",
+    "Letting relationship history dominate the specific, current issue.",
+    "Conflating disagreeing with the decision and disliking the person."
+  ],
+  after:[
+    "Confirm in writing any agreement reached, or agree explicitly on how to disagree going forward.",
+    "Protect the relationship publicly regardless of the private disagreement's outcome."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'sharedGoal', label:'What shared goal do you both have?', placeholder:'a strong, well-attended regional summit', tag:'the shared goal'},
+      {id:'view', label:"What's your view?", placeholder:'we should keep the summit in-region rather than move it abroad', tag:'your view'},
+      {id:'reasoning', label:"What's your reasoning?", placeholder:'travel cost is already the top attendance barrier in our member survey', tag:'your reasoning'}
+    ],
+    lines:[
+      "I think we both want {sharedGoal} — I want to raise something I see differently.",
+      "My view is {view}, and here's the reasoning: {reasoning}.",
+      "What am I missing from where you're sitting?"
+    ]
+  }},
+{ id:'p2', audience:'peer', title:'Giving Upward Feedback', teaser:'Raising something difficult with a volunteer chair or someone who outranks you.',
+  frameworks:[['SBI — Situation-Behavior-Impact','Center for Creative Leadership'],['Radical Candor','Kim Scott']],
+  setup:[
+    "Get explicit or implicit permission where possible: \"would it be useful if I shared an observation?\"",
+    "Choose a private, low-stakes moment — not immediately after a public misstep.",
+    "Prepare specific, observable examples — status differences make vague feedback even easier to dismiss.",
+    "Consider their likely receptiveness and adjust framing, without abandoning the substance."
+  ],
+  say:[
+    "Would it be helpful if I shared something I noticed?",
+    "In [situation], [specific behavior] — and the impact was [effect].",
+    "I'm raising this because I want this to go well for you and for the region."
+  ],
+  remember:[
+    "Status differences make candor harder in both directions — plan extra care, not avoidance.",
+    "Specific, observable feedback is far more defensible upward than a general impression.",
+    "Caring personally and challenging directly still applies upward — respect isn't the same as silence.",
+    "Choose your moment; upward feedback delivered publicly, even gently, rarely lands well."
+  ],
+  avoid:[
+    "Wrapping the message in so much hedging that the actual point disappears.",
+    "Assuming silence from them means agreement — check understanding explicitly.",
+    "Letting positional discomfort become a permanent reason never to raise real issues."
+  ],
+  after:[
+    "Note what you raised and how it landed, in case a pattern develops.",
+    "Reaffirm your support for their role regardless of the specific feedback given."
+  ],
+  script:{
+    empathyDefault:true, boundaryDefault:false,
+    fields:[
+      {id:'situation', label:'Situation', placeholder:"yesterday's chapter chair call", tag:'the situation'},
+      {id:'behavior', label:'Specific behavior', placeholder:'two members were cut off before finishing their point', tag:'the behavior'},
+      {id:'impact', label:'Impact', placeholder:'it may be making people hesitant to speak up on the calls', tag:'the impact'}
+    ],
+    lines:[
+      "Would it be helpful if I shared something I noticed?",
+      "In {situation}, {behavior} — and the impact was {impact}.",
+      "I'm raising this because I want this to go well for you and for the region."
+    ]
+  }}
+];
+
+const GLOSSARY = [
+ {name:'Difficult Conversations — The Three Conversations', who:'Douglas Stone, Bruce Patton & Sheila Heen — Harvard Negotiation Project, "Difficult Conversations: How to Discuss What Matters Most" (1999)',
+  desc:'Every hard conversation is really three at once: the "What Happened" conversation (facts and blame), the Feelings conversation, and the Identity conversation (what this means about who I am). Most conflict lives in the last two, not the first.'},
+ {name:'Crucial Conversations — STATE / Crucial Accountability — CPR', who:'Kerry Patterson, Joseph Grenny, Ron McMillan & Al Switzler, "Crucial Conversations" (2002) and "Crucial Accountability" (2013)',
+  desc:'STATE structures how to speak under stakes: Share facts, Tell your story, Ask for others’ paths, Talk tentatively, Encourage testing. CPR structures accountability: address Content once, name the Pattern if it recurs, and raise Relationship risk only if it’s genuinely at stake.'},
+ {name:'Nonviolent Communication — OFNR', who:'Marshall B. Rosenberg, "Nonviolent Communication: A Language of Life" (2003)',
+  desc:'Structures a message as Observation, Feeling, Need, Request — free of judgment or diagnosis, so the other person can hear it without getting defensive.'},
+ {name:'SBI — Situation-Behavior-Impact', who:'Center for Creative Leadership',
+  desc:'A feedback structure that separates observable fact — the situation and the specific behavior — from its effect, avoiding character judgments and keeping feedback undebatable.'},
+ {name:'Radical Candor', who:'Kim Scott, "Radical Candor: Be a Kick-Ass Boss Without Losing Your Humanity" (2017)',
+  desc:'Effective feedback requires both Caring Personally and Challenging Directly. Either alone becomes ruinous empathy (nice but unhelpful) or obnoxious aggression (honest but careless).'},
+ {name:'GROW Model', who:'Sir John Whitmore, "Coaching for Performance" (1992)',
+  desc:'A coaching structure — Goal, Reality, Options, Will — for moving someone from naming a problem to owning their own plan, rather than being handed one.'},
+ {name:'Thomas-Kilmann Conflict Mode Instrument', who:'Kenneth Thomas & Ralph Kilmann (1974)',
+  desc:'Five conflict-handling modes along assertiveness and cooperativeness: Competing, Collaborating, Compromising, Avoiding, Accommodating. Diagnosing someone’s default mode explains much of the friction pattern itself.'},
+ {name:'DESC Script', who:'Sharon Anthony Bower & Gordon H. Bower, "Asserting Yourself" (1976/1991)',
+  desc:'An assertiveness structure for direct, non-aggressive boundary-setting: Describe the behavior, Express its effect, Specify what you need, state the Consequences.'},
+ {name:'Getting to Yes — Principled Negotiation', who:'Roger Fisher & William Ury — Harvard Negotiation Project (1981)',
+  desc:'Separate people from the problem, focus on interests rather than positions, generate options for mutual gain, and use objective criteria rather than willpower to decide.'},
+ {name:"Bridges' Transition Model", who:'William Bridges, "Managing Transitions" (1991)',
+  desc:'Change succeeds only when people move through three phases: Ending/Losing/Letting Go, the Neutral Zone, and a New Beginning. Resistance is usually grief about the ending, not rejection of the future.'},
+ {name:'The Culture Map', who:'Erin Meyer — INSEAD, "The Culture Map" (2014)',
+  desc:'Eight scales for reading how business culture varies, including communicating (low-context to high-context) and disagreeing (confrontational to conflict-avoidant) — a lens for calibrating every framework above across YPO MENA’s many cultures.'}
+];
+
+const PHRASES = [
+ {h:'Opening the Conversation', items:[
+   "I want to talk about something directly — is now an okay time, or should we find another?",
+   "This is a conversation I've thought carefully about how to start, because it matters to me that we get it right.",
+   "I want to be upfront: this is a difficult conversation, and I'd rather have it honestly than dance around it."
+ ]},
+ {h:'Naming the Issue Factually', items:[
+   "Here's what I observed, specifically: ___.",
+   "I want to separate what happened from what I'm making it mean — let me just state the facts first.",
+   "The pattern I'm seeing is ___, over ___."
+ ]},
+ {h:'Inviting Their Perspective', items:[
+   "What's your read on this?",
+   "Help me understand what was going on for you.",
+   "What am I missing from where you're sitting?"
+ ]},
+ {h:'Expressing Empathy Without Retreating', items:[
+   "I know this isn't easy to hear, and I still need to say it.",
+   "This clearly matters to you, and the decision stands — both of those are true.",
+   "I can see this lands hard. Take a moment if you need it."
+ ]},
+ {h:'Holding a Boundary', items:[
+   "I hear you, and the answer is still no.",
+   "That's not something I can revisit in this conversation.",
+   "Going forward, I need ___. That's not optional."
+ ]},
+ {h:'Redirecting When It Goes Sideways', items:[
+   "Let's pause — I want to come back to the actual issue.",
+   "I notice we're getting into ___; can we park that and return to ___?",
+   "I don't think either of us wants to keep going in this direction — can we reset?"
+ ]},
+ {h:'Closing and Next Steps', items:[
+   "Here's what I heard we agreed — does that match your understanding?",
+   "What do you need from me to move forward?",
+   "I'll follow up in writing, and let's check in again on ___."
+ ]}
+];
+
+function bank(name){ return (PHRASES.find(p => p.h === name) || {items:[]}).items; }
+
+const CULTURE = [
+ {k:'Directness of feedback', v:"Some cultures across MENA chapters favor direct, explicit negative feedback; others strongly favor indirect, context-embedded feedback where the message is implied rather than stated outright. Start more indirect than you would by default, and watch whether directness is welcomed or causes visible discomfort."},
+ {k:'High- vs. low-context', v:"In higher-context settings, meaning lives heavily in relationship, tone, and what's left unsaid. Don't mistake an indirect answer for evasiveness — it may be the expected register for a hard topic."},
+ {k:'Face and standing', v:"Public correction, even gentle, can cost a member standing in ways that are hard to repair. Default to private, one-on-one delivery for anything critical, more firmly than you might elsewhere."},
+ {k:'Relationship before business', v:"In many MENA business cultures, a difficult conversation lands better after a genuine, unhurried relationship check-in. Rushing straight to the issue can read as cold, even disrespectful."},
+ {k:'Hierarchy and status', v:"Age, seniority, and family or business standing carry real weight in many chapters. Upward or peer feedback may need more scaffolding — permission-asking, indirect framing — than these frameworks assume by default."},
+ {k:'Silence and pause', v:"Comfortable silence is used differently across cultures. Resist the instinct to fill every pause; in many high-context cultures, a pause is processing, not disengagement or refusal."},
+ {k:'Language', v:"If someone isn't communicating in their first language, misunderstanding may be linguistic, not emotional or positional. Check understanding explicitly and without condescension."},
+ {k:'When unsure', v:'Ask a trusted chapter chair or long-standing member from that culture how a message like this is typically best delivered locally — before the conversation, not after it lands badly.'}
+];
+
+const WK_FIELDS = [
+ {id:'wk0', label:'Who is this with, and what’s my relationship to them?', hint:''},
+ {id:'wk1', label:'What is the one sentence I actually need to say?', hint:'Write it out, plainly, as you’d say it out loud.'},
+ {id:'wk2', label:'What are the facts — not my conclusions?', hint:'Situation and behavior only. Save impact and interpretation for the next line.'},
+ {id:'wk3', label:'What am I assuming about their intent — and is that fair?', hint:''},
+ {id:'wk4', label:'What do I want — for them, for me, and for the relationship?', hint:'Three separate answers, if they differ.'},
+ {id:'wk5', label:'What’s my opening line, written out in full?', hint:''},
+ {id:'wk6', label:'What am I not willing to negotiate?', hint:''},
+ {id:'wk7', label:'What’s my next step, regardless of how this goes?', hint:'Follow-up date, documentation, or who else needs to know.'}
+];
+
+const DEESC = {
+ signs:[
+  "Voices rising in volume or pace",
+  "The same point repeated, louder, rather than a new one made",
+  "Personal attacks replacing points about the issue",
+  "One person going silent or visibly shutting down",
+  "Visible distress — tears, shaking, flushed anger"
+ ],
+ steps:[
+  "Name it, don't ignore it: \"I want to pause — this is getting heated, and I don't think that's what either of us wants.\"",
+  "Lower your own volume and pace deliberately — it's contagious in both directions.",
+  "Offer a real break, not a rhetorical one: \"Let's take ten minutes and come back to this.\"",
+  "Return to mutual purpose explicitly before resuming content.",
+  "If it doesn't recover, end the meeting and reconvene with more structure — an agenda, possibly a third party — rather than pushing through."
+ ],
+ line:"Know the line: if there's a threat, harassment, or the conversation becomes unsafe, end it immediately and involve HR or the relevant authority. De-escalation technique is not a substitute for that judgment call."
+};
+
+/* ============================= HELPERS ============================= */
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function findScenario(id){ return SCENARIOS.find(s => s.id === id); }
+function byAudience(a){ return SCENARIOS.filter(s => s.audience === a); }
+
+/* ============================= VIEWS ============================= */
+function viewHome(){
+  return `
+  <section class="cover">
+    <div class="eyebrow">Regional Director Resource</div>
+    <h1>Navigate the conversation you're dreading.</h1>
+    <p class="tagline">A short set of questions gets you to the right framework, script, and checklist — built on established negotiation, feedback, and conflict-resolution research.</p>
+    <p class="desc">Whether it's a member you need to tell "no," a review that has to be honest, or a conflict you're stuck mediating — answer two questions and get a tailored, one-page briefing for that exact conversation.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#/navigator">Start the Navigator →</a>
+      <a class="btn btn-secondary" href="#/browse">Browse All Scenarios</a>
+    </div>
+  </section>
+
+  <div class="checklist">
+    <h2>Before you begin, ask yourself</h2>
+    <ul>
+      <li>Am I calm enough to have this conversation well? If not, when's the soonest I will be?</li>
+      <li>Do I have my facts straight, not just my impression?</li>
+      <li>Do I know what outcome I actually want — for them, for me, and for the relationship?</li>
+      <li>Have I chosen a setting — private, enough time, the right medium — that sets this up to go well?</li>
+    </ul>
+  </div>
+
+  <div class="tgrid-title">The Toolkit</div>
+  <div class="toolkit-grid">
+    <a class="tool-card" href="#/toolkit/phrases"><div class="t">Phrase Bank</div><div class="d">Sentence starters for opening, redirecting, and closing any hard conversation.</div></a>
+    <a class="tool-card" href="#/toolkit/worksheet"><div class="t">Prep Worksheet</div><div class="d">Eight questions to think through before you walk in.</div></a>
+    <a class="tool-card" href="#/toolkit/culture"><div class="t">Reading the Room</div><div class="d">Calibrating these frameworks across MENA's many business cultures.</div></a>
+    <a class="tool-card" href="#/toolkit/deescalate"><div class="t">If It Escalates</div><div class="d">Signs a conversation is going sideways, and how to reset it.</div></a>
+    <a class="tool-card" href="#/toolkit/glossary"><div class="t">Frameworks</div><div class="d">The academic models behind every scenario, with sources.</div></a>
+    <a class="tool-card" href="#/browse"><div class="t">All 18 Scenarios</div><div class="d">Skip the navigator and go straight to a specific guide.</div></a>
+  </div>
+  `;
+}
+
+function viewNavStep1(){
+  return `
+  <div class="quiz-head">
+    <a class="back-link" href="#/">← Home</a>
+    <span class="quiz-progress">Step 1 of 2</span>
+  </div>
+  <h1 class="q-title">Who is this conversation with?</h1>
+  <div class="opt-grid">
+    ${AUDIENCES.map(a => `
+      <a class="opt-card" href="#/navigator/${a.id}">
+        <span class="opt-main"><span class="t">${esc(a.label)}</span><span class="d">${esc(a.blurb)}</span></span>
+        <span class="opt-arrow">→</span>
+      </a>`).join('')}
+  </div>
+  `;
+}
+
+function viewNavStep2(aid){
+  const aud = AUDIENCES.find(a => a.id === aid);
+  if(!aud) return viewNavStep1();
+  const list = byAudience(aid);
+  return `
+  <div class="quiz-head">
+    <a class="back-link" href="#/navigator">← Who is this with</a>
+    <span class="quiz-progress">Step 2 of 2</span>
+  </div>
+  <h1 class="q-title">What's the situation, with ${esc(aud.label.toLowerCase())}?</h1>
+  <div class="opt-grid">
+    ${list.map(s => `
+      <a class="opt-card" href="#/scenario/${s.id}">
+        <span class="opt-main"><span class="t">${esc(s.title)}</span><span class="d">${esc(s.teaser)}</span></span>
+        <span class="opt-arrow">→</span>
+      </a>`).join('')}
+  </div>
+  `;
+}
+
+function viewScenario(id){
+  const s = findScenario(id);
+  if(!s) return `<div class="empty-note">That scenario wasn't found. <a href="#/browse">Browse all scenarios →</a></div>`;
+  const block = (title, arr, cls) => `
+    <div class="block ${cls||''}">
+      <div class="block-head"><h2>${esc(title)}</h2></div>
+      <ul class="bullets">${arr.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+    </div>`;
+  return `
+  <div class="no-print" style="margin-bottom:18px;">
+    <a class="back-link" href="#/navigator/${s.audience}">← ${esc(AUD_LABEL[s.audience])} scenarios</a>
+  </div>
+  <div class="scenario-head">
+    <span class="pill ${AUD_PILL[s.audience]}">${esc(AUD_LABEL[s.audience])}</span>
+    <h1>${esc(s.title)}</h1>
+    <p class="teaser">${esc(s.teaser)}</p>
+    <div class="fw-row">
+      ${s.frameworks.map(f => `<span class="fw-tag"><b>${esc(f[0])}</b>${f[1] ? ' — '+esc(f[1]) : ''}</span>`).join('')}
+    </div>
+  </div>
+
+  ${block('Set It Up', s.setup, 'block-setup')}
+
+  <div class="block">
+    <div class="block-head"><h2>What to Say</h2></div>
+    ${s.say.map(x => `<div class="say-box">"${esc(x)}"</div>`).join('')}
+  </div>
+
+  ${block('Remember', s.remember)}
+  ${block('Avoid', s.avoid, 'block-avoid')}
+  ${block('After the Conversation', s.after)}
+
+  ${renderScriptBuilder(s)}
+
+  <div class="scenario-actions no-print">
+    <a class="btn btn-secondary" href="#/browse">Browse all scenarios</a>
+    <a class="btn btn-secondary" href="#/navigator">Start over</a>
+    <button class="btn btn-secondary" onclick="window.print()">Print this briefing</button>
+  </div>
+  `;
+}
+
+function renderScriptBuilder(s){
+  const sc = s.script;
+  if(!sc) return '';
+  const idp = s.id;
+  const toggle = (key, label, def) => `
+    <label class="sb-toggle">
+      <input type="checkbox" id="sb-${idp}-tog-${key}" ${def ? 'checked' : ''}>
+      <span>${esc(label)}</span>
+    </label>`;
+  const select = (key, catName) => `
+    <select id="sb-${idp}-sel-${key}" class="sb-select" aria-label="${esc(catName)} option">
+      ${bank(catName).map((p,i) => `<option value="${i}">${esc(p)}</option>`).join('')}
+    </select>`;
+  return `
+  <div class="block script-panel" id="sb-${idp}">
+    <div class="block-head"><h2>Build Your Script</h2></div>
+    <p class="sb-intro no-print">Answer a few specifics below and we'll assemble a draft script for this exact conversation, opening and closing with lines from the Phrase Bank.</p>
+
+    <div class="no-print">
+      <div class="sb-bank-row">
+        <div class="sb-bank-item">${toggle('opening','Open with a Phrase Bank line', true)}${select('opening','Opening the Conversation')}</div>
+        <div class="sb-bank-item">${toggle('empathy','Include an empathy line', !!sc.empathyDefault)}${select('empathy','Expressing Empathy Without Retreating')}</div>
+        <div class="sb-bank-item">${toggle('boundary','Include a boundary line', !!sc.boundaryDefault)}${select('boundary','Holding a Boundary')}</div>
+        <div class="sb-bank-item">${toggle('closing','Close with a Phrase Bank line', true)}${select('closing','Closing and Next Steps')}</div>
+      </div>
+
+      <div class="sb-fields">
+        ${sc.fields.map(f => `
+          <div class="field-row">
+            <label for="sb-${idp}-f-${f.id}">${esc(f.label)}</label>
+            <input type="text" id="sb-${idp}-f-${f.id}" placeholder="${esc(f.placeholder||'')}">
+          </div>`).join('')}
+      </div>
+
+      <div class="sb-actions">
+        <button class="btn btn-secondary" id="sb-${idp}-copy" type="button">Copy script</button>
+        <button class="btn btn-secondary" id="sb-${idp}-clear" type="button">Clear my answers</button>
+      </div>
+    </div>
+
+    <div class="sb-output-wrap">
+      <div class="sb-output-head">
+        <span class="eyebrow">Your Draft Script</span>
+        <span class="sb-status" id="sb-${idp}-status"></span>
+      </div>
+      <div class="sb-output" id="sb-${idp}-output"></div>
+    </div>
+  </div>`;
+}
+
+function scriptState(s){
+  const idp = s.id;
+  const sc = s.script;
+  const toggles = {};
+  ['opening','empathy','boundary','closing'].forEach(k => {
+    const el = document.getElementById(`sb-${idp}-tog-${k}`);
+    toggles[k] = el ? el.checked : false;
+  });
+  const selects = {};
+  ['opening','empathy','boundary','closing'].forEach(k => {
+    const el = document.getElementById(`sb-${idp}-sel-${k}`);
+    selects[k] = el ? el.value : '0';
+  });
+  const fields = {};
+  sc.fields.forEach(f => {
+    const el = document.getElementById(`sb-${idp}-f-${f.id}`);
+    fields[f.id] = el ? el.value : '';
+  });
+  return { toggles, selects, fields };
+}
+
+function updateScriptOutput(s){
+  const idp = s.id;
+  const sc = s.script;
+  if(!sc) return;
+  const state = scriptState(s);
+  const lines = [];
+
+  if(state.toggles.opening){
+    const items = bank('Opening the Conversation');
+    lines.push(esc(items[+state.selects.opening] || items[0]));
+  }
+  if(state.toggles.empathy){
+    const items = bank('Expressing Empathy Without Retreating');
+    lines.push(esc(items[+state.selects.empathy] || items[0]));
+  }
+  sc.lines.forEach(tpl => {
+    const filled = tpl.replace(/\{(\w+)\}/g, (m, key) => {
+      const f = sc.fields.find(x => x.id === key);
+      const val = state.fields[key];
+      if(val && val.trim()) return esc(val.trim());
+      return `<span class="blank">[${esc(f ? f.tag : key)}]</span>`;
+    });
+    lines.push(filled);
+  });
+  if(state.toggles.boundary){
+    const items = bank('Holding a Boundary');
+    lines.push(esc(items[+state.selects.boundary] || items[0]));
+  }
+  if(state.toggles.closing){
+    const items = bank('Closing and Next Steps');
+    lines.push(esc(items[+state.selects.closing] || items[0]));
+  }
+
+  const out = document.getElementById(`sb-${idp}-output`);
+  if(out) out.innerHTML = lines.map(l => `<p class="script-line">${l}</p>`).join('');
+
+  try{ localStorage.setItem(`cc-script-${idp}`, JSON.stringify(state)); }catch(e){}
+}
+
+function initScriptBuilder(s){
+  const sc = s.script;
+  if(!sc) return;
+  const idp = s.id;
+
+  let saved = null;
+  try{ saved = JSON.parse(localStorage.getItem(`cc-script-${idp}`) || 'null'); }catch(e){ saved = null; }
+
+  if(saved){
+    ['opening','empathy','boundary','closing'].forEach(k => {
+      const t = document.getElementById(`sb-${idp}-tog-${k}`);
+      if(t && saved.toggles && typeof saved.toggles[k] === 'boolean') t.checked = saved.toggles[k];
+      const se = document.getElementById(`sb-${idp}-sel-${k}`);
+      if(se && saved.selects && saved.selects[k] !== undefined) se.value = saved.selects[k];
+    });
+    sc.fields.forEach(f => {
+      const el = document.getElementById(`sb-${idp}-f-${f.id}`);
+      if(el && saved.fields && saved.fields[f.id]) el.value = saved.fields[f.id];
+    });
+  }
+
+  const root = document.getElementById(`sb-${idp}`);
+  if(!root) return;
+  root.addEventListener('input', () => updateScriptOutput(s));
+  root.addEventListener('change', () => updateScriptOutput(s));
+
+  const copyBtn = document.getElementById(`sb-${idp}-copy`);
+  const status = document.getElementById(`sb-${idp}-status`);
+  if(copyBtn) copyBtn.addEventListener('click', async () => {
+    const out = document.getElementById(`sb-${idp}-output`);
+    const text = out ? out.innerText : '';
+    try{
+      await navigator.clipboard.writeText(text);
+      if(status) status.textContent = 'Copied.';
+    }catch(e){
+      if(status) status.textContent = 'Select the text above to copy.';
+    }
+    setTimeout(() => { if(status) status.textContent = ''; }, 2500);
+  });
+
+  const clearBtn = document.getElementById(`sb-${idp}-clear`);
+  if(clearBtn) clearBtn.addEventListener('click', () => {
+    sc.fields.forEach(f => {
+      const el = document.getElementById(`sb-${idp}-f-${f.id}`);
+      if(el) el.value = '';
+    });
+    try{ localStorage.removeItem(`cc-script-${idp}`); }catch(e){}
+    updateScriptOutput(s);
+  });
+
+  updateScriptOutput(s);
+}
+
+function viewBrowse(qs){
+  const params = new URLSearchParams(qs || '');
+  const activeFilter = params.get('f') || 'all';
+  const q = params.get('q') || '';
+  return `
+  <div class="page-head">
+    <div class="eyebrow">Full Index</div>
+    <h1>All Scenarios</h1>
+    <p class="desc">Skip the navigator and go straight to a guide, or filter by who the conversation is with.</p>
+  </div>
+  <input class="search-box" id="browse-search" type="text" placeholder="Search scenarios — try raise, conflict, or no" value="${esc(q)}">
+  <div class="filter-row" id="browse-filters">
+    ${['all','member','team','peer'].map(f => `<button class="filter-btn ${f===activeFilter?'active':''}" data-f="${f}">${f==='all'?'All':esc(AUD_LABEL[f]||f)}</button>`).join('')}
+  </div>
+  <div class="browse-grid" id="browse-grid"></div>
+  `;
+}
+
+function renderBrowseGrid(){
+  const search = document.getElementById('browse-search');
+  const grid = document.getElementById('browse-grid');
+  if(!grid) return;
+  const activeBtn = document.querySelector('#browse-filters .filter-btn.active');
+  const f = activeBtn ? activeBtn.dataset.f : 'all';
+  const q = (search ? search.value : '').trim().toLowerCase();
+  let list = SCENARIOS.filter(s => f==='all' || s.audience===f);
+  if(q){
+    list = list.filter(s => (s.title+' '+s.teaser+' '+s.frameworks.map(x=>x[0]).join(' ')).toLowerCase().includes(q));
+  }
+  grid.innerHTML = list.length ? list.map(s => `
+    <a class="browse-card" href="#/scenario/${s.id}">
+      <span class="pill ${AUD_PILL[s.audience]}">${esc(AUD_LABEL[s.audience])}</span>
+      <div class="t">${esc(s.title)}</div>
+      <div class="d">${esc(s.teaser)}</div>
+    </a>`).join('') : `<div class="empty-note">No scenarios match that search.</div>`;
+}
+
+function viewToolkit(page){
+  if(page==='phrases') return `
+    <div class="page-head"><div class="eyebrow">Toolkit</div><h1>Phrase Bank</h1>
+    <p class="desc">Sentence starters, organized by function. Adapt the wording, keep the structure.</p></div>
+    ${PHRASES.map(g => `<div class="group"><h3>${esc(g.h)}</h3>${g.items.map(x=>`<div class="phrase">"${esc(x)}"</div>`).join('')}</div>`).join('')}
+  `;
+  if(page==='worksheet') return `
+    <div class="page-head"><div class="eyebrow">Toolkit</div><h1>Prep Worksheet</h1>
+    <p class="desc">Eight questions to think through before you walk in. Saved only in this browser, on this device — nothing is sent anywhere.</p></div>
+    <div id="wk-form">
+      ${WK_FIELDS.map(f => `
+        <div class="wk-field">
+          <label for="${f.id}">${esc(f.label)}</label>
+          ${f.hint ? `<div class="hint">${esc(f.hint)}</div>` : ''}
+          <textarea id="${f.id}"></textarea>
+        </div>`).join('')}
+      <div class="wk-actions no-print">
+        <button class="btn btn-primary" id="wk-save">Save</button>
+        <button class="btn btn-secondary" id="wk-clear">Clear</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print</button>
+        <span class="wk-status" id="wk-status"></span>
+      </div>
+    </div>
+  `;
+  if(page==='culture') return `
+    <div class="page-head"><div class="eyebrow">Toolkit</div><h1>Reading the Room Across MENA</h1>
+    <p class="desc">YPO MENA chapters span dozens of nationalities, languages, and business cultures. Use this as a set of questions to calibrate the frameworks above — not a stereotype to apply. Loosely grounded in Erin Meyer's <span style="font-style:italic">The Culture Map</span>.</p></div>
+    ${CULTURE.map(c => `<div class="culture-item"><div class="k">${esc(c.k)}</div><div class="v">${esc(c.v)}</div></div>`).join('')}
+  `;
+  if(page==='deescalate') return `
+    <div class="page-head"><div class="eyebrow">Toolkit</div><h1>If It Escalates</h1>
+    <p class="desc">Signs a conversation is going sideways, and how to bring it back.</p></div>
+    <div class="group"><h3>Signs to watch for</h3><ul class="deesc-signs">${DEESC.signs.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+    <div class="group"><h3>What to do</h3><ul class="bullets">${DEESC.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+    <div class="checklist" style="margin-top:28px;"><h2>Know the line</h2><p style="font-size:14px;color:var(--ink-soft);margin-top:10px;">${esc(DEESC.line)}</p></div>
+  `;
+  if(page==='glossary') return `
+    <div class="page-head"><div class="eyebrow">Toolkit</div><h1>The Frameworks</h1>
+    <p class="desc">Every scenario in this resource is grounded in one or more of these established models. Sources included so you can go deeper.</p></div>
+    ${GLOSSARY.map(g => `<div class="gloss-item"><div class="name">${esc(g.name)}</div><div class="who">${esc(g.who)}</div><div class="desc">${esc(g.desc)}</div></div>`).join('')}
+  `;
+  return `<div class="empty-note">That page wasn't found. <a href="#/">Go home →</a></div>`;
+}
+
+/* ============================= ROUTER ============================= */
+function parseHash(){
+  const h = location.hash.replace(/^#\/?/, '');
+  const [path, qs] = h.split('?');
+  return { parts: path.split('/').filter(Boolean), qs };
+}
+
+function setActiveNav(parts){
+  document.querySelectorAll('#site-nav a').forEach(a => a.classList.remove('active'));
+  const map = {navigator:0, browse:0};
+  let target = null;
+  if(parts[0]==='navigator') target = '#/navigator';
+  else if(parts[0]==='browse') target = '#/browse';
+  else if(parts[0]==='toolkit') target = '#/toolkit/'+parts[1];
+  if(target){
+    const el = document.querySelector(`#site-nav a[href="${target}"]`);
+    if(el) el.classList.add('active');
+  }
+}
+
+function render(){
+  const { parts, qs } = parseHash();
+  const app = document.getElementById('app');
+  let html = '';
+  if(parts.length === 0) html = viewHome();
+  else if(parts[0] === 'navigator' && parts.length === 1) html = viewNavStep1();
+  else if(parts[0] === 'navigator' && parts.length === 2) html = viewNavStep2(parts[1]);
+  else if(parts[0] === 'scenario' && parts[1]) html = viewScenario(parts[1]);
+  else if(parts[0] === 'browse') html = viewBrowse(qs);
+  else if(parts[0] === 'toolkit' && parts[1]) html = viewToolkit(parts[1]);
+  else html = viewHome();
+
+  app.innerHTML = html;
+  setActiveNav(parts);
+  window.scrollTo(0,0);
+
+  if(parts[0]==='browse'){
+    renderBrowseGrid();
+    const search = document.getElementById('browse-search');
+    const filters = document.getElementById('browse-filters');
+    if(search) search.addEventListener('input', renderBrowseGrid);
+    if(filters) filters.addEventListener('click', e => {
+      const btn = e.target.closest('.filter-btn');
+      if(!btn) return;
+      filters.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBrowseGrid();
+    });
+  }
+
+  if(parts[0]==='scenario' && parts[1]){
+    const s = findScenario(parts[1]);
+    if(s) initScriptBuilder(s);
+  }
+
+  if(parts[0]==='toolkit' && parts[1]==='worksheet'){
+    let saved = {};
+    try{ saved = JSON.parse(localStorage.getItem('cc-worksheet') || '{}'); }catch(e){ saved = {}; }
+    WK_FIELDS.forEach(f => {
+      const el = document.getElementById(f.id);
+      if(el && saved[f.id]) el.value = saved[f.id];
+    });
+    const status = document.getElementById('wk-status');
+    const saveBtn = document.getElementById('wk-save');
+    const clearBtn = document.getElementById('wk-clear');
+    if(saveBtn) saveBtn.addEventListener('click', () => {
+      const data = {};
+      WK_FIELDS.forEach(f => { const el = document.getElementById(f.id); data[f.id] = el ? el.value : ''; });
+      try{ localStorage.setItem('cc-worksheet', JSON.stringify(data)); if(status) status.textContent = 'Saved to this browser.'; }
+      catch(e){ if(status) status.textContent = 'Could not save in this browser.'; }
+    });
+    if(clearBtn) clearBtn.addEventListener('click', () => {
+      WK_FIELDS.forEach(f => { const el = document.getElementById(f.id); if(el) el.value = ''; });
+      try{ localStorage.removeItem('cc-worksheet'); }catch(e){}
+      if(status) status.textContent = 'Cleared.';
+    });
+  }
+}
+
+window.addEventListener('hashchange', render);
+render();
+</script>
+</body>
+</html>
